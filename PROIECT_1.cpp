@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 ///--------------------------------------------------------------------------------------
@@ -43,12 +45,12 @@ public:
         this->vechime = vechime;
         this->salariu = salariu;
     }
-    Profesor(char* nume, char* prenume){
+    Profesor(char* nume, char* prenume, char initiala){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
         strcpy(this->prenume, prenume);
-        this->initiala = '/';
+        this->initiala = initiala;
         this->e_decan = false;
         this->vechime = 0;
         this->salariu = 0.0;
@@ -489,7 +491,7 @@ public:
         this->medie_admitere = 0.0;
         this->M = NULL;
     }
-    Student(char* nume, char* prenume, char initiala, int nr_materii, float* medii):nr_matricol(nr_studenti*50+1){
+    Student(char* nume, char* prenume, char initiala, int nr_materii):nr_matricol(nr_studenti*50+1){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -498,9 +500,7 @@ public:
         this->nr_studenti++;
         this->are_bursa = false;
         this->nr_materii = nr_materii;
-        this->medii = new float[nr_materii];
-        for(int i=0; i<nr_materii; i++)
-            this->medii[i] = medii[i];
+        this->medii = NULL;
         this->medie_admitere = 0;
         this->M = NULL;
     }
@@ -668,14 +668,291 @@ public:
     }
 };
 int Student::nr_studenti=0;
+///----------------------------------------------------------------------------------
+///meniu interactiv aplicatie
+int meniuCRUD(){
+    int x;
+    cout<<"Optiunile sunt:"<<endl;
+    cout<<"1.Create"<<endl;
+    cout<<"2.Read"<<endl;
+    cout<<"3.Update"<<endl;
+    cout<<"4.Delete"<<endl;
+    cout<<"5.Inchidere aplicatie"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
 
-
+int meniuCreate(){
+    int x;
+    cout<<endl<<"Alegeti ce obiect doriti sa creati:"<<endl;
+    cout<<"1. Student"<<endl;
+    cout<<"2. Profesor"<<endl;
+    cout<<"3. Sala"<<endl;
+    cout<<"4. Materie"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+int meniuCreate_Student(){
+    int x;
+    cout<<endl<<"Alegeti cum doriti sa construiti studentul:"<<endl;
+    cout<<"1. Fara niciun parametru"<<endl;
+    cout<<"2. Cu toti parametrii"<<endl;
+    cout<<"3. Doar cu numele intreg"<<endl;
+    cout<<"4. Folosind numele intreg si numarul de materii pe care le are"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+int meniuCreate_Profesor(){
+    int x;
+    cout<<endl<<"Alegeti cum doriti sa construiti profesorul:"<<endl;
+    cout<<"1. Fara niciun parametru"<<endl;
+    cout<<"2. Cu toti parametrii"<<endl;
+    cout<<"3. Doar cu numele intreg"<<endl;
+    cout<<"4. Folosind numele intreg, vechimea si salariul"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+int meniuCreate_Sala(){
+    int x;
+    cout<<endl<<"Alegeti cum doriti sa construiti sala:"<<endl;
+    cout<<"1. Fara niciun parametru"<<endl;
+    cout<<"2. Cu toti parametrii"<<endl;
+    cout<<"3. Folosind etajul si numarul salii"<<endl;
+    cout<<"4. Folosind etajul, numarul salii si capacitatea acesteia"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+int meniuCreate_Materie(){
+    int x;
+    cout<<endl<<"Alegeti cum doriti sa construiti materia:"<<endl;
+    cout<<"1. Fara niciun parametru"<<endl;
+    cout<<"2. Cu toti parametrii"<<endl;
+    cout<<"3. Doar cu denumirea materiei"<<endl;
+    cout<<"4. Folosind denumirea materiei si profesorul"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+int meniuRead(){
+    int x;
+    cout<<endl<<"Alegeti ce obiect doriti sa vizualizati:"<<endl;
+    cout<<"1. Student"<<endl;
+    cout<<"2. Profesor"<<endl;
+    cout<<"3. Sala"<<endl;
+    cout<<"4. Materie"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
 int main()
 {
-    Student A;
-    cin>>A;
-    cout<<endl;
-    cout<<endl;
-    cout<<A;
+    cout<<"ACEASTA ESTE O APLICATIE DE GESTIONARE A UNEI FACULTATI"<<endl<<endl;
+    vector<Student> studenti;
+    vector<Profesor> profesori;
+    vector<Sala> sali;
+    vector<Materie> materii;
+    int rez=meniuCRUD();
+    while(rez!=5){
+        if(rez == 1){
+            rez=meniuCreate();
+            while(rez!=5){
+                if(rez == 1){
+                    rez=meniuCreate_Student();
+                    while(rez!=5){
+                        if(rez == 1){
+                            Student A;
+                            studenti.push_back(A);
+                            }
+                        else if(rez == 2){
+                            Student A;
+                            cin>>A;
+                            studenti.push_back(A);
+                            }
+                        else if(rez == 3){
+                                char* nume;
+                                char* prenume;
+                                char initiala;
+                                nume = new char[30];
+                                prenume = new char[30];
+                                cout<<"Numele studentului: "; cin>>nume;
+                                cout<<"Preumele studentului: "; cin>>prenume;
+                                cout<<"Initiala tatalui studentului: "; cin>>initiala;
+                                Student A(nume, prenume, initiala);
+                                studenti.push_back(A);
+                                delete[] nume;
+                                delete[] prenume;
+                            }
+                        else if(rez == 4){
+                                char* nume;
+                                char* prenume;
+                                char initiala;
+                                int nr_materii;
+                                nume = new char[30];
+                                prenume = new char[30];
+                                cout<<endl<<"Numele studentului: "; cin>>nume;
+                                cout<<"Preumele studentului: "; cin>>prenume;
+                                cout<<"Initiala tatalui studentului: "; cin>>initiala;
+                                cout<<"Numarul de materii: "; cin>>nr_materii;
+                                Student A(nume, prenume, initiala, nr_materii);
+                                studenti.push_back(A);
+                                delete[] nume;
+                                delete[] prenume;
+                            }
+                        rez=meniuCreate_Student();
+                        }
+                    }
+                else if(rez == 2){
+                    rez=meniuCreate_Profesor();
+                    while(rez!=5){
+                        if(rez == 1){
+                            Profesor A;
+                            profesori.push_back(A);
+                            }
+                        else if(rez == 2){
+                            Profesor A;
+                            cin>>A;
+                            profesori.push_back(A);
+                            }
+                        else if(rez == 3){
+                                char* nume;
+                                char* prenume;
+                                char initiala;
+                                nume = new char[30];
+                                prenume = new char[30];
+                                cout<<"Numele profesorului: "; cin>>nume;
+                                cout<<"Preumele profesorului: "; cin>>prenume;
+                                cout<<"Initiala tatalui profesorului: "; cin>>initiala;
+                                Profesor A(nume, prenume, initiala);
+                                profesori.push_back(A);
+                                delete[] nume;
+                                delete[] prenume;
+                            }
+                        else if(rez == 4){
+                                char* nume;
+                                char* prenume;
+                                char initiala;
+                                int vechime;
+                                float salariu;
+                                nume = new char[30];
+                                prenume = new char[30];
+                                cout<<endl<<"Numele profesorului: "; cin>>nume;
+                                cout<<"Preumele profesorului: "; cin>>prenume;
+                                cout<<"Initiala tatalui profesorului: "; cin>>initiala;
+                                cout<<"Vechimea profesorului: "; cin>>vechime;
+                                cout<<"Salariul profesorului: "; cin>>salariu;
+                                Profesor A(nume, prenume, initiala, vechime, salariu);
+                                profesori.push_back(A);
+                                delete[] nume;
+                                delete[] prenume;
+                            }
+                        rez=meniuCreate_Profesor();
+                        }
+                }
+                else if(rez == 3){
+                    rez=meniuCreate_Sala();
+                    while(rez!=5){
+                        if(rez == 1){
+                            Sala A;
+                            sali.push_back(A);
+                            }
+                        else if(rez == 2){
+                            Sala A;
+                            cin>>A;
+                            sali.push_back(A);
+                            }
+                        else if(rez == 3){
+                            int nr_sala, etaj;
+                            cout<<"Etajul la care se afla sala: "; cin>>etaj;
+                            cout<<"Numarul salii: "; cin>>nr_sala;
+                            Sala A(etaj, nr_sala);
+                            sali.push_back(A);
+                            }
+                        else if(rez == 4){
+                            int nr_sala, etaj, capacitate;
+                            cout<<"Etajul la care se afla sala: "; cin>>etaj;
+                            cout<<"Numarul salii: "; cin>>nr_sala;
+                            cout<<"Capacitatea salii: "; cin>>capacitate;
+                            Sala A(etaj, nr_sala, capacitate);
+                            sali.push_back(A);
+                            }
+                        rez=meniuCreate_Sala();
+                        }
+                }
+                else if(rez == 4){
+                    rez=meniuCreate_Materie();
+                    while(rez!=5){
+                        if(rez == 1){
+                            Materie A;
+                            materii.push_back(A);
+                            }
+                        else if(rez == 2){
+                            Materie A;
+                            cin>>A;
+                            materii.push_back(A);
+                            }
+                        else if(rez == 3){
+                            string numele_materiei;
+                            cout<<"Denumirea materiei: "; cin>>numele_materiei;
+                            Materie A(numele_materiei);
+                            materii.push_back(A);
+                            }
+                        else if(rez == 4){
+                            string numele_materiei;
+                            Profesor A;
+                            cout<<"Denumirea materiei: "; cin>>numele_materiei;
+                            cin>>A;
+                            Materie B(numele_materiei, A);
+                            materii.push_back(B);
+                            }
+                        rez=meniuCreate_Materie();
+                        }
+                }
+                rez=meniuCreate();
+                }
+        }
+        else if(rez == 2){
+            rez=meniuRead();
+        }
+        else if(rez == 3){
+
+        }
+        else if(rez == 4){
+
+        }
+        rez=meniuCRUD();
+        }
+
     return 0;
 }
