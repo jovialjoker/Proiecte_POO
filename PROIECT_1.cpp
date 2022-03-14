@@ -5,6 +5,7 @@
 
 using namespace std;
 ///--------------------------------------------------------------------------------------
+
 class Profesor{
 private:
     char* nume;
@@ -15,7 +16,41 @@ private:
     float salariu;
 public:
     ///constructori:
-    Profesor() {
+    Profesor();
+    Profesor(char* nume, char* prenume, char initiala, bool e_decan, int vechime, float salariu);
+    Profesor(char* nume, char* prenume, char initiala, int vechime, float salariu);
+    Profesor(char* nume, char* prenume, char initiala);
+
+    ///copy-constructor
+    Profesor(const Profesor& prof);
+
+    ///getteri:
+    char* getNume();
+    char* getPrenume();
+    char getInitiala();
+    bool getE_decan();
+    int getVechime();
+    float getSalariu();
+
+    ///setteri:
+    void setNume(char* nume);
+    void setPrenume(char* prenume);
+    void setInitiala(char initiala);
+    void setE_decan(bool e_decan);
+    void setVechime(int vechime);
+    void setSalariu(float salariu);
+
+    ///operatori:
+    Profesor operator=(const Profesor& prof);
+
+    friend istream & operator>>(istream &in, Profesor &prof);
+
+    friend ostream & operator<<(ostream &out, const Profesor &prof);
+    ///destructor:
+    ~Profesor();
+};
+
+    Profesor::Profesor() {
         this->nume = new char[strlen("Profesor")+1];
         strcpy(this->nume, "Profesor");
         this->prenume = new char[strlen("Anonim")+1];
@@ -25,7 +60,7 @@ public:
         this->vechime = 0;
         this->salariu = 0.0;
     }
-    Profesor(char* nume, char* prenume, char initiala, bool e_decan, int vechime, float salariu){
+    Profesor::Profesor(char* nume, char* prenume, char initiala, bool e_decan, int vechime, float salariu){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -35,7 +70,7 @@ public:
         this->vechime = vechime;
         this->salariu = salariu;
     }
-    Profesor(char* nume, char* prenume, char initiala, int vechime, float salariu){
+    Profesor::Profesor(char* nume, char* prenume, char initiala, int vechime, float salariu){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -45,7 +80,7 @@ public:
         this->vechime = vechime;
         this->salariu = salariu;
     }
-    Profesor(char* nume, char* prenume, char initiala){
+    Profesor::Profesor(char* nume, char* prenume, char initiala){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -57,7 +92,7 @@ public:
     }
 
     ///copy-constructor
-    Profesor(const Profesor& prof){
+    Profesor::Profesor(const Profesor& prof){
         this->nume = new char[strlen(prof.nume)+1];
         strcpy(this->nume, prof.nume);
         this->prenume = new char[strlen(prof.prenume)+1];
@@ -69,50 +104,50 @@ public:
     }
 
     ///getteri:
-    char* getNume(){
+    char* Profesor::getNume(){
         return this->nume;
     }
-    char* getPrenume(){
+    char* Profesor::getPrenume(){
         return this->prenume;
     }
-    char getInitiala(){
+    char Profesor::getInitiala(){
         return this->initiala;
     }
-    bool getE_decan(){
+    bool Profesor::getE_decan(){
         return this->e_decan;
     }
-    int getVechime(){
+    int Profesor::getVechime(){
         return this->vechime;
     }
-    float getSalariu(){
+    float Profesor::getSalariu(){
         return this->salariu;
     }
     ///setteri:
-    void setNume(char* nume){
+    void Profesor::setNume(char* nume){
         delete[] this->nume;
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
     }
-    void setPrenume(char* prenume){
+    void Profesor::setPrenume(char* prenume){
         delete[] this->prenume;
         this->prenume = new char[strlen(prenume)+1];
         strcpy(this->prenume, prenume);
     }
-    void setInitiala(char initiala){
+    void Profesor::setInitiala(char initiala){
         this->initiala = initiala;
     }
-    void setE_decan(bool e_decan){
+    void Profesor::setE_decan(bool e_decan){
         this->e_decan = e_decan;
     }
-    void setVechime(int vechime){
+    void Profesor::setVechime(int vechime){
         this->vechime = vechime;
     }
-    void setSalariu(float salariu){
+    void Profesor::setSalariu(float salariu){
         this->salariu = salariu;
     }
 
     ///operatori:
-    Profesor operator=(const Profesor& prof){
+    Profesor Profesor::operator=(const Profesor& prof){
         if(this != &prof){
             if(this->nume!=NULL)
                 delete[] this->nume;
@@ -130,7 +165,7 @@ public:
         return *this;
     }
 
-    friend istream & operator>>(istream &in, Profesor &prof){
+    istream & operator>>(istream &in, Profesor &prof){
         cout<<"Introduceti datele profesorului: "<<endl;
         cout<<"Nume:";
         in>>prof.nume;
@@ -147,7 +182,8 @@ public:
         return in;
     }
 
-    friend ostream & operator<<(ostream &out, const Profesor &prof){
+    ostream & operator<<(ostream &out, const Profesor &prof){
+        out<<"Date despre profesor:"<<endl;
         out<<"Nume:"<<prof.nume<<endl;
         out<<"Prenume:"<<prof.prenume<<endl;
         out<<"Initiala:"<<prof.initiala<<endl;
@@ -157,16 +193,16 @@ public:
             out<<"E_decan:"<<"NU"<<endl;
         out<<"Vechime:"<<prof.vechime<<endl;
         out<<"Salariu:"<<prof.salariu<<endl;
+        cout<<endl<<endl;
         return out;
     }
     ///destructor:
-    ~Profesor(){
+    Profesor::~Profesor(){
         if(this->nume!=NULL)
             delete[] this->nume;
         if(this->prenume!=NULL)
             delete[] this->prenume;
     }
-};
 
 ///---------------------------------------------------------------------------------------
 class Sala{
@@ -178,7 +214,34 @@ private:
     char* nume_amfiteatru; //in caz ca amfiteatru==true
 public:
     ///constructori
-    Sala(){
+    Sala();
+    Sala(int etaj, int nr_sala, int capacitate, bool e_amfiteatru, char* nume_amfiteatru);
+    Sala(int etaj, int nr_sala, int capacitate);
+    Sala(int etaj, int nr_sala);
+    ///copy-constructor
+    Sala(const Sala& sala);
+    ///getteri
+    int getEtaj();
+    int getNr_sala();
+    int getCapacitate();
+    bool getE_amfiteatru();
+    char* getNume_amfiteatru();
+    ///setteri
+    void setEtaj(int etaj);
+    void setNr_sala(int nr_sala);
+    void setCapacitate(int capacitate);
+    void setE_amfiteatru(bool e_amfiteatru);
+    void setNume_amfiteatru(char* nume_amfiteatru);
+    ///operatori
+    Sala operator=(const Sala& sala);
+    friend istream & operator>>(istream& in, Sala& sala);
+    friend ostream & operator<<(ostream& out, const Sala& sala);
+    ///deconstructor
+    ~Sala();
+
+};
+
+    Sala::Sala(){
         this->etaj = 0;
         this->nr_sala = 0;
         this->capacitate = 0;
@@ -186,7 +249,7 @@ public:
         this->nume_amfiteatru = new char[2];
         strcpy(this->nume_amfiteatru, "/");
     }
-    Sala(int etaj, int nr_sala, int capacitate, bool e_amfiteatru, char* nume_amfiteatru){
+    Sala::Sala(int etaj, int nr_sala, int capacitate, bool e_amfiteatru, char* nume_amfiteatru){
         this->etaj = etaj;
         this->nr_sala = nr_sala;
         this->capacitate = capacitate;
@@ -200,7 +263,7 @@ public:
         strcpy(this->nume_amfiteatru, "/");
         }
     }
-    Sala(int etaj, int nr_sala, int capacitate){
+    Sala::Sala(int etaj, int nr_sala, int capacitate){
         this->etaj = etaj;
         this->nr_sala = nr_sala;
         this->capacitate = capacitate;
@@ -208,7 +271,7 @@ public:
         this->nume_amfiteatru = new char[2];
         strcpy(this->nume_amfiteatru, "/");
     }
-    Sala(int etaj, int nr_sala){
+    Sala::Sala(int etaj, int nr_sala){
         this->etaj = etaj;
         this->nr_sala = nr_sala;
         this->capacitate = 0;
@@ -218,7 +281,7 @@ public:
     }
 
     ///copy-constructor
-    Sala(const Sala& sala){
+    Sala::Sala(const Sala& sala){
         this->etaj = sala.etaj;
         this->nr_sala = sala.nr_sala;
         this->capacitate = sala.capacitate;
@@ -228,36 +291,36 @@ public:
     }
 
     ///getteri
-    int getEtaj(){
+    int Sala::getEtaj(){
         return this->etaj;
     }
-    int getNr_sala(){
+    int Sala::getNr_sala(){
         return this->nr_sala;
     }
-    int getCapacitate(){
+    int Sala::getCapacitate(){
         return this->capacitate;
     }
-    bool getE_amfiteatru(){
+    bool Sala::getE_amfiteatru(){
         return this->e_amfiteatru;
     }
-    char* getNume_amfiteatru(){
+    char* Sala::getNume_amfiteatru(){
         return this->nume_amfiteatru;
     }
 
     ///setteri
-    void setEtaj(int etaj){
+    void Sala::setEtaj(int etaj){
         this->etaj = etaj;
     }
-    void setNr_sala(int nr_sala){
+    void Sala::setNr_sala(int nr_sala){
         this->nr_sala = nr_sala;
     }
-    void setCapacitate(int capacitate){
+    void Sala::setCapacitate(int capacitate){
         this->capacitate = capacitate;
     }
-    void setE_amfiteatru(bool e_amfiteatru){
+    void Sala::setE_amfiteatru(bool e_amfiteatru){
         this->e_amfiteatru = e_amfiteatru;
     }
-    void setNume_amfiteatru(char* nume_amfiteatru){
+    void Sala::setNume_amfiteatru(char* nume_amfiteatru){
         if(this->nume_amfiteatru!=NULL)
             delete[] this->nume_amfiteatru;
         this->nume_amfiteatru = new char[strlen(nume_amfiteatru)+1];
@@ -266,7 +329,7 @@ public:
 
 
     ///operatori
-    Sala operator=(const Sala& sala){
+    Sala Sala::operator=(const Sala& sala){
         if(this!=&sala){
             if(this->nume_amfiteatru!=NULL)
                 delete[] this->nume_amfiteatru;
@@ -279,7 +342,7 @@ public:
         }
         return *this;
     }
-    friend istream & operator>>(istream& in, Sala& sala){
+    istream & operator>>(istream& in, Sala& sala){
         cout<<"Introduceti datele necesare pentru a adauga o sala noua"<<endl;
         cout<<"Nr etaj:";
         in>>sala.etaj;
@@ -299,7 +362,7 @@ public:
         }
         return in;
     }
-    friend ostream & operator<<(ostream& out, const Sala& sala){
+    ostream & operator<<(ostream& out, const Sala& sala){
         out<<"Detalii despre sala:"<<endl;
         out<<"Nr etaj: "<<sala.etaj<<endl;
         out<<"Nr sala: "<<sala.nr_sala<<endl;
@@ -311,16 +374,15 @@ public:
         else{
             out<<"Este amfiteatru? "<<"NU"<<endl;
         }
+        cout<<endl<<endl;
         return out;
     }
 
     ///deconstructor
-    ~Sala(){
+    Sala::~Sala(){
         if(this->nume_amfiteatru!=NULL)
             delete[] this->nume_amfiteatru;
     }
-
-};
 
 ///-------------------------------------------------------------------------------------
 class Materie {
@@ -332,30 +394,55 @@ private:
     bool are_examen;
 public:
     ///constructori
-    Materie(){
+    Materie();
+    Materie(string nume_materie, Profesor prof, Sala s, int credite, bool are_examen);
+    Materie(string nume_materie, Profesor prof);
+    Materie(string nume_materie);
+    Materie(const Materie& M);
+
+    ///getteri
+    string getNume_materie();
+    Profesor getProf();
+    Sala getS();
+    int getCredite();
+    bool getAre_examen();
+
+    ///setteri
+    void setNume_materie(string nume_materie);
+    void setProf(Profesor prof);
+    void setS(Sala s);
+    void setCredite(int credite);
+    void setAre_examen(bool are_examen);
+
+    ///operatori
+    Materie operator=(const Materie& M);
+    friend istream & operator>>(istream& in, Materie& M);
+    friend ostream & operator<<(ostream& out, Materie& M);
+};
+    Materie::Materie(){
         this->nume_materie = "Materie";
         this->credite = 0;
         this->are_examen = false;
     }
-    Materie(string nume_materie, Profesor prof, Sala s, int credite, bool are_examen){
+    Materie::Materie(string nume_materie, Profesor prof, Sala s, int credite, bool are_examen){
         this->nume_materie = nume_materie;
         this->prof = prof;
         this->s = s;
         this->credite = credite;
         this->are_examen = are_examen;
     }
-    Materie(string nume_materie, Profesor prof){
+    Materie::Materie(string nume_materie, Profesor prof){
         this->nume_materie = nume_materie;
         this->prof = prof;
         this->credite = 0;
         this->are_examen = false;
     }
-    Materie(string nume_materie){
+    Materie::Materie(string nume_materie){
         this->nume_materie = nume_materie;
         this->credite = 0;
         this->are_examen = false;
     }
-    Materie(const Materie& M){
+    Materie::Materie(const Materie& M){
         this->nume_materie = M.nume_materie;
         this->prof = M.prof;
         this->s = M.s;
@@ -363,41 +450,41 @@ public:
         this->are_examen = M.are_examen;
     }
     ///getteri
-    string getNume_materie(){
+    string Materie::getNume_materie(){
         return this->nume_materie;
     }
-    Profesor getProf(){
+    Profesor Materie::getProf(){
         return this->prof;
     }
-    Sala getS(){
+    Sala Materie::getS(){
         return this->s;
     }
-    int getCredite(){
+    int Materie::getCredite(){
         return this->credite;
     }
-    bool getAre_examen(){
+    bool Materie::getAre_examen(){
         return this->are_examen;
     }
 
     ///setteri
-    void setNume_materie(string nume_materie){
+    void Materie::setNume_materie(string nume_materie){
         this->nume_materie = nume_materie;
     }
-    void setProf(Profesor prof){
+    void Materie::setProf(Profesor prof){
         this->prof = prof;
     }
-    void setS(Sala s){
+    void Materie::setS(Sala s){
         this->s = s;
     }
-    void setCredite(int credite){
+    void Materie::setCredite(int credite){
         this->credite = credite;
     }
-    void setAre_examen(bool are_examen){
+    void Materie::setAre_examen(bool are_examen){
         this->are_examen = are_examen;
     }
 
     ///operatori
-    Materie operator=(const Materie& M){
+    Materie Materie::operator=(const Materie& M){
         if(this!=&M){
             this->nume_materie = M.nume_materie;
             this->prof = M.prof;
@@ -408,7 +495,7 @@ public:
         return *this;
     }
 
-    friend istream & operator>>(istream& in, Materie& M){
+    istream & operator>>(istream& in, Materie& M){
         cout<<"Introduceti datele despre materie:"<<endl;
         cout<<"Nume materie: "; in>>M.nume_materie;
         in>>M.prof;
@@ -417,16 +504,17 @@ public:
         cout<<"Are examen? "; in>>M.are_examen;
         return in;
     }
-    friend ostream & operator<<(ostream& out, Materie& M){
+    ostream & operator<<(ostream& out, Materie& M){
         out<<"Date despre aceasta materie:"<<endl;
         out<<"Nume materie: "<<M.nume_materie<<endl;
         out<<M.prof;
         out<<M.s;
         cout<<"Nr credite: "<<M.credite<<endl;
         cout<<"Are examen? "<<M.are_examen<<endl;
+        cout<<endl<<endl;
         return out;
     }
-};
+
 
 ///----------------------------------------------------------------------------
 class Student {
@@ -443,7 +531,44 @@ private:
     Materie* M;
 public:
     ///constructori
-    Student():nr_matricol(nr_studenti*50+1){
+    Student();
+    Student(char* nume, char* prenume, char initiala, bool are_bursa, int nr_materii, float* medii, double medie_admitere, Materie* M);
+    Student(char* nume, char* prenume, char initiala);
+    Student(char* nume, char* prenume, char initiala, int nr_materii);
+    Student(const Student& s);
+
+    ///getteri
+    char* getNume();
+    char* getPrenume();
+    char getInitiala();
+    int getNr_matricol();
+    static int getNr_studenti();
+    bool getAre_bursta();
+    int getNr_materii();
+    float* getMedii();
+    double getMedie_admitere();
+    Materie* getM();
+
+    ///setteri
+    void setNume(char* nume);
+    void setPrenume(char* prenume);
+    void setInitiala(char initiala);
+    static void setNr_studenti(int nr_studenti);
+    void setAre_bursa(bool are_bursa);
+    void setNr_materii(int nr_materii);
+    void setMedii(int nr_medii, float* medii);
+    void setMedie_admitere(double medie_admitere);
+    void setM(int nr_medii, Materie* M);
+    ///operatori
+    Student operator=(const Student& s);
+    friend istream & operator>>(istream& in, Student& s);
+    friend ostream & operator<<(ostream& out, const Student& s);
+    ///deconstructor
+    ~Student();
+};
+int Student::nr_studenti=0;
+
+    Student::Student():nr_matricol(nr_studenti*50+1){
         this->nume = new char[strlen("Student")+1];
         strcpy(this->nume, "Student");
         this->prenume = new char[strlen("Anonim")+1];
@@ -456,7 +581,7 @@ public:
         this->medie_admitere = 0.0;
         this->M = NULL;
     }
-    Student(char* nume, char* prenume, char initiala, bool are_bursa, int nr_materii, float* medii, double medie_admitere, Materie* M):nr_matricol(nr_studenti*50+1){
+    Student::Student(char* nume, char* prenume, char initiala, bool are_bursa, int nr_materii, float* medii, double medie_admitere, Materie* M):nr_matricol(nr_studenti*50+1){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -478,7 +603,7 @@ public:
             this->M[i].setAre_examen(M[i].getAre_examen());
         }
     }
-    Student(char* nume, char* prenume, char initiala):nr_matricol(nr_studenti*50+1){
+    Student::Student(char* nume, char* prenume, char initiala):nr_matricol(nr_studenti*50+1){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -491,7 +616,7 @@ public:
         this->medie_admitere = 0.0;
         this->M = NULL;
     }
-    Student(char* nume, char* prenume, char initiala, int nr_materii):nr_matricol(nr_studenti*50+1){
+    Student::Student(char* nume, char* prenume, char initiala, int nr_materii):nr_matricol(nr_studenti*50+1){
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
         this->prenume = new char[strlen(prenume)+1];
@@ -504,7 +629,7 @@ public:
         this->medie_admitere = 0;
         this->M = NULL;
     }
-    Student(const Student& s):nr_matricol(nr_studenti*50+1){
+    Student::Student(const Student& s):nr_matricol(nr_studenti*50+1){
         this->nume = new char[strlen(s.nume)+1];
         strcpy(this->nume, s.nume);
         this->prenume = new char[strlen(s.prenume)+1];
@@ -528,41 +653,41 @@ public:
     }
 
     ///getteri
-    char* getNume(){return this->nume;}
-    char* getPrenume() {return this->prenume;}
-    char getInitiala() {return this->initiala;}
-    int getNr_matricol() {return this->nr_matricol;}
-    static int getNr_studenti() {return Student::nr_studenti;}
-    bool getAre_bursta() {return this->are_bursa;}
-    int getNr_materii(){return this->nr_materii;}
-    float* getMedii() {return this->medii;}
-    double getMedie_admitere(){return this->medie_admitere;}
-    Materie* getM() {return this->M;}
+    char* Student::getNume(){return this->nume;}
+    char* Student::getPrenume() {return this->prenume;}
+    char Student::getInitiala() {return this->initiala;}
+    int Student::getNr_matricol() {return this->nr_matricol;}
+    int Student::getNr_studenti() {return Student::nr_studenti;}
+    bool Student::getAre_bursta() {return this->are_bursa;}
+    int Student::getNr_materii(){return this->nr_materii;}
+    float* Student::getMedii() {return this->medii;}
+    double Student::getMedie_admitere(){return this->medie_admitere;}
+    Materie* Student::getM() {return this->M;}
 
     ///setteri
-    void setNume(char* nume){
+    void Student::setNume(char* nume){
         delete[] this->nume;
         this->nume = new char[strlen(nume)+1];
         strcpy(this->nume, nume);
     }
-    void setPrenume(char* prenume){
+    void Student::setPrenume(char* prenume){
         delete[] this->prenume;
         this->prenume = new char[strlen(prenume)+1];
         strcpy(this->prenume, prenume);
     }
-    void setInitiala(char initiala){
+    void Student::setInitiala(char initiala){
         this->initiala = initiala;
     }
-    static void setNr_studenti(int nr_studenti){
+    void Student::setNr_studenti(int nr_studenti){
         Student::nr_studenti = nr_studenti;
     }
-    void setAre_bursa(bool are_bursa){
+    void Student::setAre_bursa(bool are_bursa){
         this->are_bursa = are_bursa;
     }
-    void setNr_materii(int nr_materii){
+    void Student::setNr_materii(int nr_materii){
         this->nr_materii = nr_materii;
     }
-    void setMedii(int nr_medii, float* medii){
+    void Student::setMedii(int nr_medii, float* medii){
         setNr_materii(nr_medii);
         if(this->medii != NULL)
             delete[] this->medii;
@@ -570,11 +695,14 @@ public:
         for(int i=0; i<nr_medii; i++)
             this->medii[i] = medii[i];
     }
-    void setMedie_admitere(double medie_admitere){
+    void Student::setMedie_admitere(double medie_admitere){
         this->medie_admitere = medie_admitere;
     }
-    void setM(int nr_medii, Materie* M){
+    void Student::setM(int nr_medii, Materie* M){
+        if (this->M != NULL)
+            delete[] M;
         this->nr_materii = nr_medii;
+        this->M = new Materie[nr_materii];
         for(int i=0; i<this->nr_materii;i++){
             this->M[i].setNume_materie(M[i].getNume_materie());
             this->M[i].setProf(M[i].getProf());
@@ -584,7 +712,7 @@ public:
         }
     }
     ///operatori
-    Student operator=(const Student& s){
+    Student Student::operator=(const Student& s){
         if(this != &s){
             if(this->nume!=NULL)
                 delete[] this->nume;
@@ -618,7 +746,7 @@ public:
         return *this;
     }
 
-    friend istream & operator>>(istream& in, Student& s){
+    istream & operator>>(istream& in, Student& s){
         cout<<"INTRODUCETI DATELE STUDENTULUI:"<<endl<<endl;
         cout<<"nume: "; in>>s.nume;
         cout<<"prenume: "; in>>s.prenume;
@@ -639,7 +767,7 @@ public:
         }
         return in;
     }
-    friend ostream & operator<<(ostream& out, const Student& s){
+    ostream & operator<<(ostream& out, const Student& s){
         out<<"DATELE STUDENTULUI SUNT:"<<endl<<endl;
         out<<"Nume: "<<s.nume<<endl;
         out<<"Prenume: "<<s.prenume<<endl;
@@ -653,10 +781,11 @@ public:
             out<<"Media: "<<s.medii[i]<<endl;
         }
         out<<endl<<"medie_admitere: "<<s.medie_admitere<<endl;
+        cout<<endl<<endl;
         return out;
     }
     ///deconstructor
-    ~Student(){
+    Student::~Student(){
         if(this->medii != NULL)
             delete[] this->medii;
         if(this->nume!=NULL)
@@ -666,8 +795,10 @@ public:
         if(this->M!=NULL)
             delete[] this->M;
     }
-};
-int Student::nr_studenti=0;
+///--------------------------------------------------------------------------------------
+
+
+
 ///----------------------------------------------------------------------------------
 ///meniu interactiv aplicatie
 int meniuCRUD(){
@@ -776,6 +907,102 @@ int meniuRead(){
     }
     return x;
 }
+int meniuUpdate(){
+    int x;
+    cout<<endl<<"Alegeti ce tip de obiect doriti sa schimbati:"<<endl;
+    cout<<"1. Student"<<endl;
+    cout<<"2. Profesor"<<endl;
+    cout<<"3. Sala"<<endl;
+    cout<<"4. Materie"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+int meniuUpdate_Student( vector<Student>& studenti){
+    int x;
+    if(studenti.size() == 0)
+        cout<<"Creati un student mai intai"<<endl;
+    else
+        for(int i=0; i<studenti.size();i++)
+        {
+            cout<<"Studentul "<<i+1<<": "<<studenti[i].getNume()<<endl;
+        }
+    cout<<studenti.size()+1<<".Inapoi"<<endl;
+    cout<<endl;
+    cout<<"Alegerea este:";
+    cin>>x;
+    while(x<1 || x>studenti.size()){
+        cout<<"Va rog alegeti un numar intre 1 si "<<studenti.size()+1<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+
+}
+int meniuUpdate_Profesor( vector<Profesor>& profesori){
+    int x;
+    if(profesori.size() == 0)
+        cout<<"Creati un profesor mai intai"<<endl;
+    else
+        for(int i=0; i<profesori.size();i++)
+        {
+            cout<<"Studentul "<<i+1<<": "<<profesori[i].getNume()<<endl;
+
+        }
+    cout<<profesori.size()+1<<".Inapoi"<<endl;
+    cout<<endl;
+    cout<<"Alegerea este:";
+    cin>>x;
+    while(x<1 || x>profesori.size()){
+        cout<<"Va rog alegeti un numar intre 1 si "<<profesori.size()+1<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+
+}
+int meniuUpdate_Sala( vector<Sala>& sali){
+    int x;
+    if(sali.size() == 0)
+        cout<<"Creati o sala mai intai"<<endl;
+    else
+        for(int i=0; i<sali.size();i++)
+        {
+            cout<<"Sala "<<i+1<<": "<<sali[i].getNr_sala()<<endl;
+        }
+    cout<<sali.size()+1<<".Inapoi"<<endl;
+    cout<<endl;
+    cout<<"Alegerea este:";
+    cin>>x;
+    while(x<1 || x>sali.size()){
+        cout<<"Va rog alegeti un numar intre 1 si "<<sali.size()+1<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+
+}
+int meniuUpdate_Materie( vector<Materie>& materii){
+    int x;
+    if(materii.size() == 0)
+        cout<<"Creati o materie mai intai"<<endl;
+    else
+        for(int i=0; i<materii.size();i++)
+        {
+            cout<<"Sala "<<i+1<<": "<<materii[i].getNume_materie()<<endl;
+        }
+    cout<<materii.size()+1<<".Inapoi"<<endl;
+    cout<<endl;
+    cout<<"Alegerea este:";
+    cin>>x;
+    while(x<1 || x>materii.size()){
+        cout<<"Va rog alegeti un numar intre 1 si "<<materii.size()+1<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+
+}
 int main()
 {
     cout<<"ACEASTA ESTE O APLICATIE DE GESTIONARE A UNEI FACULTATI"<<endl<<endl;
@@ -794,11 +1021,22 @@ int main()
                         if(rez == 1){
                             Student A;
                             studenti.push_back(A);
+                            for(int i=0;i<A.getNr_materii();i++){
+                                materii.push_back(A.getM()[i]);
+                                profesori.push_back(A.getM()[i].getProf());
+                                sali.push_back(A.getM()[i].getS());
+                            }
+
                             }
                         else if(rez == 2){
                             Student A;
                             cin>>A;
                             studenti.push_back(A);
+                            for(int i=0;i<A.getNr_materii();i++){
+                                materii.push_back(A.getM()[i]);
+                                profesori.push_back(A.getM()[i].getProf());
+                                sali.push_back(A.getM()[i].getS());
+                            }
                             }
                         else if(rez == 3){
                                 char* nume;
@@ -811,6 +1049,11 @@ int main()
                                 cout<<"Initiala tatalui studentului: "; cin>>initiala;
                                 Student A(nume, prenume, initiala);
                                 studenti.push_back(A);
+                                for(int i=0;i<A.getNr_materii();i++){
+                                    materii.push_back(A.getM()[i]);
+                                    profesori.push_back(A.getM()[i].getProf());
+                                    sali.push_back(A.getM()[i].getS());
+                                }
                                 delete[] nume;
                                 delete[] prenume;
                             }
@@ -827,6 +1070,11 @@ int main()
                                 cout<<"Numarul de materii: "; cin>>nr_materii;
                                 Student A(nume, prenume, initiala, nr_materii);
                                 studenti.push_back(A);
+                                for(int i=0;i<A.getNr_materii();i++){
+                                    materii.push_back(A.getM()[i]);
+                                    profesori.push_back(A.getM()[i].getProf());
+                                    sali.push_back(A.getM()[i].getS());
+                                }
                                 delete[] nume;
                                 delete[] prenume;
                             }
@@ -916,17 +1164,23 @@ int main()
                         if(rez == 1){
                             Materie A;
                             materii.push_back(A);
+                            profesori.push_back(A.getProf());
+                            sali.push_back(A.getS());
                             }
                         else if(rez == 2){
                             Materie A;
                             cin>>A;
                             materii.push_back(A);
+                            profesori.push_back(A.getProf());
+                            sali.push_back(A.getS());
                             }
                         else if(rez == 3){
                             string numele_materiei;
                             cout<<"Denumirea materiei: "; cin>>numele_materiei;
                             Materie A(numele_materiei);
                             materii.push_back(A);
+                            profesori.push_back(A.getProf());
+                            sali.push_back(A.getS());
                             }
                         else if(rez == 4){
                             string numele_materiei;
@@ -935,6 +1189,8 @@ int main()
                             cin>>A;
                             Materie B(numele_materiei, A);
                             materii.push_back(B);
+                            profesori.push_back(B.getProf());
+                            sali.push_back(B.getS());
                             }
                         rez=meniuCreate_Materie();
                         }
@@ -944,8 +1200,69 @@ int main()
         }
         else if(rez == 2){
             rez=meniuRead();
+            while(rez != 5){
+                if(rez == 1){
+                    if(studenti.size() == 0)
+                        cout<<"Creati un student mai intai"<<endl;
+                    else
+                        for(int i=0; i<studenti.size();i++)
+                        {
+                            cout<<"Studentul "<<i+1<<":"<<endl;
+                            cout<<studenti[i];
+                        }
+                }
+                else if(rez == 2){
+                    if(profesori.size() == 0)
+                        cout<<"Creati un profesor mai intai"<<endl;
+                    else
+                        for(int i=0; i<profesori.size();i++)
+                        {
+                            cout<<"Profesorul "<<i+1<<":"<<endl;
+                            cout<<profesori[i];
+                        }
+                }
+                else if(rez == 3){
+                    if(sali.size() == 0)
+                        cout<<"Creati o sala mai intai"<<endl;
+                    else
+                        for(int i=0; i<sali.size();i++)
+                        {
+                            cout<<"Sala "<<i+1<<":"<<endl;
+                            cout<<sali[i];
+                        }
+                }
+                else if(rez == 4){
+                    if(materii.size() == 0)
+                        cout<<"Creati o materie mai intai"<<endl;
+                    else
+                        for(int i=0; i<materii.size();i++)
+                        {
+                            cout<<"Materia "<<i+1<<":"<<endl;
+                            cout<<materii[i];
+                        }
+                }
+                rez = meniuRead();
+            }
+
         }
         else if(rez == 3){
+            rez=meniuUpdate();
+            while(rez != 5){
+                if(rez == 1){
+                    rez=meniuUpdate_Student(studenti);
+
+                }
+                else if(rez == 2){
+                    rez=meniuUpdate_Profesor(profesori);
+                }
+                else if(rez == 3){
+                    rez=meniuUpdate_Sala(sali);
+                }
+                else if(rez == 4){
+                    rez=meniuUpdate_Materie(materii);
+                }
+                rez = meniuUpdate();
+            }
 
         }
         else if(rez == 4){
