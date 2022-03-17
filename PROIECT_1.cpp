@@ -354,7 +354,10 @@ public:
         in>>sala.e_amfiteatru;
         if(sala.e_amfiteatru == 1){
             cout<<"Nume amfiteatru:";
-            in>>sala.nume_amfiteatru;
+            string nume_amfiteatru;
+            in.get();
+            getline(in, nume_amfiteatru);
+            strcpy(sala.nume_amfiteatru, nume_amfiteatru.c_str());
         }
         else{
             sala.nume_amfiteatru = new char[2];
@@ -497,7 +500,8 @@ public:
 
     istream & operator>>(istream& in, Materie& M){
         cout<<"Introduceti datele despre materie:"<<endl;
-        cout<<"Nume materie: "; in>>M.nume_materie;
+        cout<<"Nume materie: ";
+        getline(in,M.nume_materie);
         in>>M.prof;
         in>>M.s;
         cout<<"Nr credite: "; in>>M.credite;
@@ -922,10 +926,12 @@ int meniuUpdate(){
     }
     return x;
 }
-int meniuUpdate_Student( vector<Student>& studenti){
+int listaStudent( vector<Student>& studenti){
     int x;
-    if(studenti.size() == 0)
+    if(studenti.size() == 0){
         cout<<"Creati un student mai intai"<<endl;
+        return -1;
+    }
     else
         for(int i=0; i<studenti.size();i++)
         {
@@ -942,10 +948,13 @@ int meniuUpdate_Student( vector<Student>& studenti){
     return x;
 
 }
-int meniuUpdate_Profesor( vector<Profesor>& profesori){
+int listaProfesor( vector<Profesor>& profesori){
     int x;
-    if(profesori.size() == 0)
+    if(profesori.size() == 0){
         cout<<"Creati un profesor mai intai"<<endl;
+        return -1;
+    }
+
     else
         for(int i=0; i<profesori.size();i++)
         {
@@ -963,10 +972,12 @@ int meniuUpdate_Profesor( vector<Profesor>& profesori){
     return x;
 
 }
-int meniuUpdate_Sala( vector<Sala>& sali){
+int listaSala( vector<Sala>& sali){
     int x;
-    if(sali.size() == 0)
+    if(sali.size() == 0){
         cout<<"Creati o sala mai intai"<<endl;
+        return -1;
+    }
     else
         for(int i=0; i<sali.size();i++)
         {
@@ -983,10 +994,12 @@ int meniuUpdate_Sala( vector<Sala>& sali){
     return x;
 
 }
-int meniuUpdate_Materie( vector<Materie>& materii){
+int listaMaterie( vector<Materie>& materii){
     int x;
-    if(materii.size() == 0)
+    if(materii.size() == 0){
         cout<<"Creati o materie mai intai"<<endl;
+        return -1;
+    }
     else
         for(int i=0; i<materii.size();i++)
         {
@@ -1016,13 +1029,79 @@ int atributeStudent(){
     cout<<"8. Materiile studentului"<<endl;
     cout<<"9. Inapoi"<<endl<<endl;
     cout<<"Alegerea este:"; cin>>x;
-    while(x<1 || x>10){
+    while(x<1 || x>9){
         cout<<"Va rog alegeti un numar intre 1 si 9"<<endl;
         cout<<"Alegerea este:"; cin>>x;
     }
     return x;
 
 }
+
+int atributeProfesor(){
+    int x;
+    cout<<endl<<"Alegeti atributul pe care doriti sa il schimabti:"<<endl;
+    cout<<"1. Numele"<<endl;
+    cout<<"2. Prenumele"<<endl;
+    cout<<"3. Initiala"<<endl;
+    cout<<"4. Este decan? "<<endl;
+    cout<<"5. Vechime"<<endl;
+    cout<<"6. Salariu"<<endl;
+    cout<<"7. Inpoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>7){
+        cout<<"Va rog alegeti un numar intre 1 si 7"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+    }
+int atributeSala(){
+    int x;
+    cout<<endl<<"Alegeti atributul pe care doriti sa il schimabti:"<<endl;
+    cout<<"1. Etajul"<<endl;
+    cout<<"2. Numarul salii"<<endl;
+    cout<<"3. Capacitate"<<endl;
+    cout<<"4. Este amfiteatru? "<<endl;
+    cout<<"5. Numele amfiteatrului(Poate fi schimbat doar daca este amfiteatru)"<<endl;
+    cout<<"6. Inpoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>6){
+        cout<<"Va rog alegeti un numar intre 1 si 6"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+    }
+int atributeMaterie(){
+    int x;
+    cout<<endl<<"Alegeti atributul pe care doriti sa il schimabti:"<<endl;
+    cout<<"1. Numele materiei"<<endl;
+    cout<<"2. Profesorul"<<endl;
+    cout<<"3. Sala"<<endl;
+    cout<<"4. Numarul de credite"<<endl;
+    cout<<"5. Are examen?"<<endl;
+    cout<<"6. Inapoi"<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>6){
+        cout<<"Va rog alegeti un numar intre 1 si 6"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+    }
+int meniuDelete(){
+    int x;
+    cout<<endl<<"Alegeti ce tip de obiect doriti sa stergeti:"<<endl;
+    cout<<"1. Student"<<endl;
+    cout<<"2. Profesor"<<endl;
+    cout<<"3. Sala"<<endl;
+    cout<<"4. Materie"<<endl;
+    cout<<"5. Inapoi"<<endl<<endl;
+    cout<<"Alegerea este:"; cin>>x;
+    while(x<1 || x>5){
+        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+        cout<<"Alegerea este:"; cin>>x;
+    }
+    return x;
+}
+
 
 int main()
 {
@@ -1044,10 +1123,7 @@ int main()
                             studenti.push_back(A);
                             for(int i=0;i<A.getNr_materii();i++){
                                 materii.push_back(A.getM()[i]);
-                                profesori.push_back(A.getM()[i].getProf());
-                                sali.push_back(A.getM()[i].getS());
                             }
-
                             }
                         else if(rez == 2){
                             Student A;
@@ -1055,8 +1131,6 @@ int main()
                             studenti.push_back(A);
                             for(int i=0;i<A.getNr_materii();i++){
                                 materii.push_back(A.getM()[i]);
-                                profesori.push_back(A.getM()[i].getProf());
-                                sali.push_back(A.getM()[i].getS());
                             }
                             }
                         else if(rez == 3){
@@ -1072,8 +1146,6 @@ int main()
                                 studenti.push_back(A);
                                 for(int i=0;i<A.getNr_materii();i++){
                                     materii.push_back(A.getM()[i]);
-                                    profesori.push_back(A.getM()[i].getProf());
-                                    sali.push_back(A.getM()[i].getS());
                                 }
                                 delete[] nume;
                                 delete[] prenume;
@@ -1093,8 +1165,6 @@ int main()
                                 studenti.push_back(A);
                                 for(int i=0;i<A.getNr_materii();i++){
                                     materii.push_back(A.getM()[i]);
-                                    profesori.push_back(A.getM()[i].getProf());
-                                    sali.push_back(A.getM()[i].getS());
                                 }
                                 delete[] nume;
                                 delete[] prenume;
@@ -1185,33 +1255,29 @@ int main()
                         if(rez == 1){
                             Materie A;
                             materii.push_back(A);
-                            profesori.push_back(A.getProf());
-                            sali.push_back(A.getS());
                             }
                         else if(rez == 2){
                             Materie A;
+                            cin.get();
                             cin>>A;
                             materii.push_back(A);
-                            profesori.push_back(A.getProf());
-                            sali.push_back(A.getS());
                             }
                         else if(rez == 3){
                             string numele_materiei;
-                            cout<<"Denumirea materiei: "; cin>>numele_materiei;
+                            cout<<"Denumirea materiei: ";
+                            cin.get(); getline(cin, numele_materiei);
                             Materie A(numele_materiei);
                             materii.push_back(A);
-                            profesori.push_back(A.getProf());
-                            sali.push_back(A.getS());
                             }
                         else if(rez == 4){
                             string numele_materiei;
                             Profesor A;
-                            cout<<"Denumirea materiei: "; cin>>numele_materiei;
+                            cout<<"Denumirea materiei: ";
+                            cin.get();
+                            getline(cin,numele_materiei);
                             cin>>A;
                             Materie B(numele_materiei, A);
                             materii.push_back(B);
-                            profesori.push_back(B.getProf());
-                            sali.push_back(B.getS());
                             }
                         rez=meniuCreate_Materie();
                         }
@@ -1270,109 +1336,300 @@ int main()
             rez=meniuUpdate();
             while(rez != 5){
                 if(rez == 1){
-                    int indice = meniuUpdate_Student(studenti)-1;
-                    rez = atributeStudent();
-                    while(rez<9){
-                        switch(rez){
-                            case 1:{
-                                char* nume;
-                                nume = new char[30];
-                                cout<<endl<<"Introduceti noul nume:"; cin>>nume;
-                                studenti[indice].setNume(nume);
-                                delete[] nume;
-                                break;
-                            }
-                            case 2:{
-                                char* prenume;
-                                prenume = new char[30];
-                                cout<<endl<<"Introduceti noul prenume:"; cin>>prenume;
-                                studenti[indice].setPrenume(prenume);
-                                delete[] prenume;
-                                break;
-                            }
-                            case 3:{
-                                char initiala;
-                                cout<<endl<<"Introduceti noua initiala"; cin>>initiala;
-                                studenti[indice].setInitiala(initiala);
-                                break;
-                            }
-                            case 4:{
-                                bool are_bursa;
-                                cout<<endl<<"Are bursa?(0 pentru NU, 1 pentru DA) ";cin>>are_bursa;
-                                studenti[indice].setAre_bursa(are_bursa);
-                                break;
-                            }
-                            case 5:{
-                                int nr_materii;
-                                cout<<endl<<"Introduceti noul numar de materii:"; cin>>nr_materii;
-                                studenti[indice].setNr_materii(nr_materii);
-                                float* medii;
-                                medii = new float[nr_materii];
-                                Materie* M;
-                                M = new Materie[nr_materii];
-                                for(int i = 0; i<nr_materii; i++)
-                                {
-                                    cout<<endl<<"Materia "<<i+1; cin>>M[i];
-                                    cout<<endl<<"Media "; cin>>medii[i];
-                                }
-                                studenti[indice].setMedii(nr_materii, medii);
-                                studenti[indice].setM(nr_materii, M);
-                                delete[] medii;
-                                delete[] M;
-                                break;
-                            }
-                            case 6:{
-                                cout<<endl<<"Introduceti noile medii:"<<endl;
-                                float* medii;
-                                medii = new float[studenti[indice].getNr_materii()];
-                                for(int i = 0; i<studenti[indice].getNr_materii(); i++)
-                                {
-                                    cout<<"Media "<<i+1<<": "; cin>>medii[i];
-                                }
-                                studenti[indice].setMedii(studenti[indice].getNr_materii(), medii);
-                                delete[] medii;
-                                break;
-                            }
-                            case 7:{
-                                cout<<endl<<"Introduceti noua medie de admitere: "<<endl;
-                                double medie_admitere;
-                                cin>>medie_admitere;
-                                studenti[indice].setMedie_admitere(medie_admitere);
-                                break;
-                            }
-                            case 8:{
-                                cout<<endl<<"Introduceti noile materii: "<<endl;
-                                Materie* M;
-                                int nr_materii = studenti[indice].getNr_materii();
-                                M = new Materie[nr_materii];
-                                for(int i = 0; i<nr_materii; i++)
-                                {
-                                    cout<<endl<<"Materia "<<i+1; cin>>M[i];
-                                }
-                                studenti[indice].setM(nr_materii, M);
-                                delete[] M;
-                                break;
-                            }
-                        }
+                    int indice = listaStudent(studenti)-1;
+                    if(indice != -2){
                         rez = atributeStudent();
+                        while(rez<9){
+                            switch(rez){
+                                case 1:{
+                                    char* nume;
+                                    nume = new char[30];
+                                    cout<<endl<<"Introduceti noul nume:"; cin>>nume;
+                                    studenti[indice].setNume(nume);
+                                    delete[] nume;
+                                    break;
+                                }
+                                case 2:{
+                                    char* prenume;
+                                    prenume = new char[30];
+                                    cout<<endl<<"Introduceti noul prenume:"; cin>>prenume;
+                                    studenti[indice].setPrenume(prenume);
+                                    delete[] prenume;
+                                    break;
+                                }
+                                case 3:{
+                                    char initiala;
+                                    cout<<endl<<"Introduceti noua initiala"; cin>>initiala;
+                                    studenti[indice].setInitiala(initiala);
+                                    break;
+                                }
+                                case 4:{
+                                    bool are_bursa;
+                                    cout<<endl<<"Are bursa?(0 pentru NU, 1 pentru DA) ";cin>>are_bursa;
+                                    studenti[indice].setAre_bursa(are_bursa);
+                                    break;
+                                }
+                                case 5:{
+                                    int nr_materii;
+                                    cout<<endl<<"Introduceti noul numar de materii:"; cin>>nr_materii;
+                                    studenti[indice].setNr_materii(nr_materii);
+                                    float* medii;
+                                    medii = new float[nr_materii];
+                                    Materie* M;
+                                    M = new Materie[nr_materii];
+                                    for(int i = 0; i<nr_materii; i++)
+                                    {
+                                        cout<<endl<<"Materia "<<i+1; cin>>M[i];
+                                        cout<<endl<<"Media "; cin>>medii[i];
+                                    }
+                                    studenti[indice].setMedii(nr_materii, medii);
+                                    studenti[indice].setM(nr_materii, M);
+                                    delete[] medii;
+                                    delete[] M;
+                                    break;
+                                }
+                                case 6:{
+                                    cout<<endl<<"Introduceti noile medii:"<<endl;
+                                    float* medii;
+                                    medii = new float[studenti[indice].getNr_materii()];
+                                    for(int i = 0; i<studenti[indice].getNr_materii(); i++)
+                                    {
+                                        cout<<"Media "<<i+1<<": "; cin>>medii[i];
+                                    }
+                                    studenti[indice].setMedii(studenti[indice].getNr_materii(), medii);
+                                    delete[] medii;
+                                    break;
+                                }
+                                case 7:{
+                                    cout<<endl<<"Introduceti noua medie de admitere: "<<endl;
+                                    double medie_admitere;
+                                    cin>>medie_admitere;
+                                    studenti[indice].setMedie_admitere(medie_admitere);
+                                    break;
+                                }
+                                case 8:{
+                                    cout<<endl<<"Introduceti noile materii: "<<endl;
+                                    Materie* M;
+                                    int nr_materii = studenti[indice].getNr_materii();
+                                    M = new Materie[nr_materii];
+                                    for(int i = 0; i<nr_materii; i++)
+                                    {
+                                        cout<<endl<<"Materia "<<i+1; cin>>M[i];
+                                    }
+                                    studenti[indice].setM(nr_materii, M);
+                                    delete[] M;
+                                    break;
+                                }
+                            }
+                            cout<<"Student modificat!"<<endl;
+                            rez = atributeStudent();
+                        }
                     }
+
                 }
                 else if(rez == 2){
-                    rez=meniuUpdate_Profesor(profesori);
-                    
+                    int indice = listaProfesor(profesori)-1;
+                    if(indice != -2){
+                        rez = atributeProfesor();
+                        while(rez<7){
+                            switch(rez){
+                                case 1:{
+                                    char* nume;
+                                    nume = new char[30];
+                                    cout<<endl<<"Introduceti noul nume:"; cin>>nume;
+                                    profesori[indice].setNume(nume);
+                                    delete[] nume;
+                                    break;
+                                }
+                                case 2:{
+                                    char* prenume;
+                                    prenume = new char[30];
+                                    cout<<endl<<"Introduceti noul prenume:"; cin>>prenume;
+                                    profesori[indice].setPrenume(prenume);
+                                    delete[] prenume;
+                                    break;
+                                }
+                                case 3:{
+                                    char initiala;
+                                    cout<<endl<<"Introduceti noua initiala:"; cin>>initiala;
+                                    profesori[indice].setInitiala(initiala);
+                                    break;
+                                }
+                                case 4:{
+                                    bool e_decan;
+                                    cout<<endl<<"Este decan?(0/1):"; cin>>e_decan;
+                                    profesori[indice].setE_decan(e_decan);
+                                    break;
+                                }
+                                case 5:{
+                                    int vechime;
+                                    cout<<endl<<"Introduceti noua vechime:"; cin>>vechime;
+                                    profesori[indice].setVechime(vechime);
+                                    break;
+
+                                }
+                                case 6:{
+                                    float salariu;
+                                    cout<<endl<<"Introduceti noul salariu:"; cin>>salariu;
+                                    profesori[indice].setSalariu(salariu);
+                                    break;
+                                }
+                            }
+                            cout<<"Profesor modificat!"<<endl;
+                            rez = atributeProfesor();
+                        }
+                    }
                 }
                 else if(rez == 3){
-                    rez=meniuUpdate_Sala(sali);
+                    int indice = listaSala(sali) - 1;
+                    if(indice != -2){
+                        rez = atributeSala();
+                        while(rez<6){
+                            switch(rez){
+                                case 1:{
+                                    int etaj;
+                                    cout<<endl<<"Introduceti noul etaj:"; cin>>etaj;
+                                    sali[indice].setEtaj(etaj);
+                                    break;
+                                }
+                                case 2:{
+                                    int nr_sala;
+                                    cout<<endl<<"Introduceti noul numar al salii:"; cin>>nr_sala;
+                                    sali[indice].setNr_sala(nr_sala);
+                                    break;
+                                }
+                                case 3:{
+                                    int capacitate;
+                                    cout<<endl<<"Introduceti noua capacitate:"; cin>>capacitate;
+                                    sali[indice].setCapacitate(capacitate);
+                                    break;
+                                }
+                                case 4:{
+                                    bool e_amfiteatru;
+                                    cout<<endl<<"Este amfiteatru?(0/1):"; cin>>e_amfiteatru;
+                                    sali[indice].setE_amfiteatru(e_amfiteatru);
+                                    break;
+                                }
+                                case 5:{
+                                    if(sali[indice].getE_amfiteatru() == 0)
+                                        cout<<endl<<"Sala nu este amfiteatru, deci nu ii puteti da un nume";
+                                    else{
+                                        char* nume_amfiteatru;
+                                        nume_amfiteatru = new char[100];
+                                        string aux;
+                                        cout<<endl<<"Introduceti noul nume al amfiteatrului";
+                                        cin.get();
+                                        getline(cin, aux);
+                                        strcpy(nume_amfiteatru, aux.c_str());
+                                        sali[indice].setNume_amfiteatru(nume_amfiteatru);
+                                        delete[] nume_amfiteatru;
+                                    }
+                                    break;
+                                }
+                            }
+                            cout<<"Sala modificata!"<<endl;
+                            rez = atributeSala();
+                        }
+                    }
                 }
                 else if(rez == 4){
-                    rez=meniuUpdate_Materie(materii);
+                    int indice = listaMaterie(materii) - 1;
+                    if(indice != -2){
+                        rez = atributeMaterie();
+                        while(rez<6){
+                            switch(rez){
+                                case 1:{
+                                    string nume_materie;
+                                    cout<<endl<<"Introduceti noul nume al materiei:";
+                                    cin.get();
+                                    getline(cin, nume_materie);
+                                    materii[indice].setNume_materie(nume_materie);
+                                    break;
+                                }
+                                case 2:{
+                                    Profesor prof;
+                                    cout<<endl<<"Introduceti noul profesor:";
+                                    cin>>prof;
+                                    materii[indice].setProf(prof);
+                                    break;
+                                }
+                                case 3:{
+                                    Sala s;
+                                    cout<<endl<<"Introduceti noua sala in care se vor tine orele:";
+                                    cin>>s;
+                                    materii[indice].setS(s);
+                                    break;
+                                }
+                                case 4:{
+                                    int credite;
+                                    cout<<endl<<"Introduceti noul numar de credite:";
+                                    cin>>credite;
+                                    materii[indice].setCredite(credite);
+                                    break;
+                                }
+                                case 5:{
+                                    bool are_examen;
+                                    cout<<endl<<"Are examen?(0/1):";
+                                    cin>>are_examen;
+                                    materii[indice].setAre_examen(are_examen);
+                                    break;
+                                }
+                            }
+                            cout<<"Materie modificata!"<<endl;
+                            rez = atributeMaterie();
+                        }
+                    }
                 }
                 rez = meniuUpdate();
             }
-
         }
         else if(rez == 4){
-
+            rez = meniuDelete();
+            while(rez !=5){
+                switch(rez){
+                    case 1:{
+                        int indice = listaStudent(studenti) -1;
+                        if(indice != -2){
+                            for(int i=indice;i<studenti.size()-1;i++)
+                                studenti[i] = studenti[i+1];
+                            studenti.pop_back();
+                            cout<<endl<<"Student sters!"<<endl;
+                        }
+                        break;
+                    }
+                    case 2:{
+                        int indice = listaProfesor(profesori) -1;
+                        if(indice != -2){
+                            for(int i=indice;i<profesori.size()-1;i++)
+                                profesori[i] = profesori[i+1];
+                            profesori.pop_back();
+                            cout<<endl<<"Profesor sters!"<<endl;
+                        }
+                        break;
+                    }
+                    case 3:{
+                        int indice = listaSala(sali) -1;
+                        if(indice != -2){
+                            for(int i=indice;i<sali.size()-1;i++)
+                                sali[i] = sali[i+1];
+                            sali.pop_back();
+                            cout<<endl<<"Sala stearsa!"<<endl;
+                        }
+                        break;
+                    }
+                    case 4:{
+                        int indice = listaMaterie(materii) -1;
+                        if(indice != -2){
+                            for(int i=indice;i<materii.size()-1;i++)
+                                materii[i] = materii[i+1];
+                            materii.pop_back();
+                            cout<<endl<<"Materie stersa!"<<endl;
+                        }
+                        break;
+                    }
+                }
+                rez = meniuDelete();
+            }
         }
         rez=meniuCRUD();
         }
