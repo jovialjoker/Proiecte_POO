@@ -39,6 +39,23 @@ public:
     Profesor operator=(const Profesor& prof);
     friend istream & operator>>(istream &in, Profesor &prof);
     friend ostream & operator<<(ostream &out, const Profesor &prof);
+    const Profesor& operator++();
+    Profesor operator++(int);
+    const Profesor& operator--();
+    Profesor operator--(int);
+    operator int();
+    bool operator<(const Profesor& prof);
+    bool operator>(const Profesor& prof);
+    bool operator<=(const Profesor& prof);
+    bool operator>=(const Profesor& prof);
+    bool operator==(const Profesor& prof);
+    Profesor operator+(int x);
+    friend Profesor operator+(int x, Profesor prof);
+    Profesor operator+(Profesor prof);
+    Profesor operator-(int x);
+    friend Profesor operator-(int x, Profesor prof);
+    //functionalitate
+    void verificareDecan();
     //destructor:
     ~Profesor();
 };
@@ -74,6 +91,22 @@ public:
     Sala operator=(const Sala& sala);
     friend istream & operator>>(istream& in, Sala& sala);
     friend ostream & operator<<(ostream& out, const Sala& sala);
+    const Sala operator++();
+    Sala operator++(int);
+    const Sala operator--();
+    Sala operator--(int);
+    bool operator<(const Sala& s);
+    bool operator>(const Sala& s);
+    bool operator<=(const Sala& s);
+    bool operator>=(const Sala& s);
+    bool operator==(const Sala& s);
+    Sala operator+(int x);
+    friend Sala operator+(int x, Sala s);
+    Sala operator+(Sala s);
+    Sala operator-(int x);
+    friend Sala operator-(int x, Sala s);
+    //functionalitate
+    void verificareAmfiteatru();
     //deconstructor
     ~Sala();
 };
@@ -108,6 +141,22 @@ public:
     Materie operator=(const Materie& M);
     friend istream & operator>>(istream& in, Materie& M);
     friend ostream & operator<<(ostream& out, Materie& M);
+    const Materie operator++();
+    Materie operator++(int);
+    const Materie operator--();
+    Materie operator--(int);
+    bool operator<(const Materie& M);
+    bool operator>(const Materie& M);
+    bool operator<=(const Materie& M);
+    bool operator>=(const Materie& M);
+    bool operator==(const Materie& M);
+    Materie operator+(int x);
+    friend Materie operator+(int x, Materie M);
+    Materie operator+(Materie M);
+    Materie operator-(int x);
+    friend Materie operator-(int x, Materie M);
+    //functionalitate
+    void prezentareMaterie();
     //deconstructor
     ~Materie(){}
 };
@@ -156,6 +205,18 @@ public:
     Student operator=(const Student& s);
     friend istream & operator>>(istream& in, Student& s);
     friend ostream & operator<<(ostream& out, const Student& s);
+    float operator[](int index);
+    operator int();
+    bool operator<(const Student& S);
+    bool operator>(const Student& S);
+    bool operator<=(const Student& S);
+    bool operator>=(const Student& S);
+    bool operator==(const Student& S);
+    Student operator+(Student S);
+    Student operator+(Materie M);
+    friend Student operator+(Materie materie, Student Stud);
+    //functionalitate
+    float mediaGenerala();
     //deconstructor
     ~Student();
 };
@@ -401,8 +462,8 @@ int main()
                     else
                         for(int i=0; i<materii.size();i++)
                         {
-                            cout<<"Materia "<<i+1<<":"<<endl;
-                            cout<<materii[i];
+                            cout<<endl<<"Materia "<<i+1<<":"<<endl;
+                            materii[i].prezentareMaterie();
                         }
                 }
                 rez = meniuRead();
@@ -717,6 +778,7 @@ int main()
 
 ///------------------------------------------------------------------------------------------------------------------------
 ///metode student
+//constructori
 Student::Student():nr_matricol(nr_studenti*50+1){
     this->nume = new char[strlen("Student")+1];
     strcpy(this->nume, "Student");
@@ -800,7 +862,6 @@ Student::Student(const Student& s):nr_matricol(nr_studenti*50+1){
         this->M[i].setAre_examen(s.M[i].getAre_examen());
     }
 }
-
 //getteri
 char* Student::getNume(){return this->nume;}
 char* Student::getPrenume() {return this->prenume;}
@@ -812,7 +873,6 @@ int Student::getNr_materii(){return this->nr_materii;}
 float* Student::getMedii() {return this->medii;}
 double Student::getMedie_admitere(){return this->medie_admitere;}
 Materie* Student::getM() {return this->M;}
-
 //setteri
 void Student::setNume(char* nume){
     delete[] this->nume;
@@ -894,7 +954,6 @@ Student Student::operator=(const Student& s){
     }
     return *this;
 }
-
 istream & operator>>(istream& in, Student& s){
     cout<<"INTRODUCETI DATELE STUDENTULUI:"<<endl<<endl;
     cout<<"nume: "; in>>s.nume;
@@ -923,15 +982,94 @@ ostream & operator<<(ostream& out, const Student& s){
     out<<"Initiala: "<<s.initiala<<endl;
     out<<"Are bursa: "<<s.are_bursa<<endl;
     out<<"Nr materii: "<<s.nr_materii<<endl;
-    out<<"Materiile studentului: ";
+    out<<"Materiile studentului: \n";
     for(int i=0;i<s.nr_materii;i++){
-        out<<"Materia "<<i<<": "<<endl;
+        out<<"Materia "<<i+1<<": "<<endl;
         out<<s.M[i];
         out<<"Media: "<<s.medii[i]<<endl;
     }
     out<<endl<<"medie_admitere: "<<s.medie_admitere<<endl;
     cout<<endl<<endl;
     return out;
+}
+float Student::operator[](int index) {
+    return this->medii[index];
+}
+Student::operator int() {
+    return (int)this->medie_admitere;
+}
+bool Student::operator<(const Student& S){
+    if(this->medie_admitere < S.medie_admitere)
+        return true;
+    return false;
+}
+bool Student::operator>(const Student& S){
+    if(this->medie_admitere > S.medie_admitere)
+        return 1;
+    return 0;
+}
+bool Student::operator<=(const Student& S){
+    if(this->medie_admitere<=S.medie_admitere)
+        return 1;
+    return 0;
+}
+bool Student::operator>=(const Student& S){
+    if(this->medie_admitere>=S.medie_admitere)
+        return 1;
+    return 0;
+}
+bool Student::operator==(const Student& S){
+    if(strcmp(this->nume, S.nume) == 0 && strcmp(this->prenume, S.prenume) == 0 && this->initiala == S.initiala)
+        return 1;
+    return 0;
+}
+Student Student::operator+(Student S){
+    if(this->nr_materii <= S.nr_materii)
+        for (int i = 0; i < this->nr_materii; ++i) {
+            S.medii[i] += this->medii[i] ;
+        }
+    else
+        for (int i = 0; i < S.nr_materii; ++i) {
+            S.medii[i] += this->medii[i] ;
+        }
+    return S;
+}
+Student Student::operator+(Materie M){
+    Student rez(*this);
+    Materie* aux;
+    aux = new Materie[rez.nr_materii];
+    for(int i=0;i<rez.nr_materii;i++)
+        aux[i] = rez.M[i];
+    delete[] rez.M;
+    rez.nr_materii++;
+    rez.M = new Materie[rez.nr_materii];
+    for(int i=0;i<rez.nr_materii-1;i++)
+        rez.M[i] = aux[i];
+    rez.M[rez.nr_materii-1] = M;
+    delete[] aux;
+    return rez;
+}
+Student operator+(Materie materie, Student Stud){
+    Materie* aux;
+    aux = new Materie[Stud.nr_materii];
+    for(int i=0;i<Stud.nr_materii;i++)
+        aux[i] = Stud.M[i];
+    delete[] Stud.M;
+    Stud.nr_materii++;
+    Stud.M = new Materie[Stud.nr_materii];
+    for(int i=0;i<Stud.nr_materii-1;i++)
+        Stud.M[i] = aux[i];
+    Stud.M[Stud.nr_materii-1] = materie;
+    delete[] aux;
+    return Stud;
+}
+//functionalitate
+float Student::mediaGenerala(){
+    float mg=0;
+    for(int i=0;i<this->nr_materii;i++)
+        mg+=this->medii[i];
+    mg = mg / this->nr_materii;
+    return mg;
 }
 //deconstructor
 Student::~Student(){
@@ -944,10 +1082,9 @@ Student::~Student(){
     if(this->M!=NULL)
         delete[] this->M;
 }
-
 ///-------------------------------------------------------------------------------------------------------
 ///metode materii
-
+//constructori
 Materie::Materie(){
     this->nume_materie = "Materie";
     this->credite = 0;
@@ -994,7 +1131,6 @@ int Materie::getCredite(){
 bool Materie::getAre_examen(){
     return this->are_examen;
 }
-
 //setteri
 void Materie::setNume_materie(string nume_materie){
     this->nume_materie = nume_materie;
@@ -1011,7 +1147,6 @@ void Materie::setCredite(int credite){
 void Materie::setAre_examen(bool are_examen){
     this->are_examen = are_examen;
 }
-
 //operatori
 Materie Materie::operator=(const Materie& M){
     if(this!=&M){
@@ -1023,10 +1158,10 @@ Materie Materie::operator=(const Materie& M){
     }
     return *this;
 }
-
 istream & operator>>(istream& in, Materie& M){
     cout<<"Introduceti datele despre materie:"<<endl;
     cout<<"Nume materie: ";
+    in.get();
     getline(in,M.nume_materie);
     in>>M.prof;
     in>>M.s;
@@ -1044,9 +1179,91 @@ ostream & operator<<(ostream& out, Materie& M){
     cout<<endl<<endl;
     return out;
 }
+const Materie Materie::operator++(){
+    this->credite++;
+    return *this;
+}
+Materie Materie::operator++(int){
+    Materie aux(*this);
+    this->credite++;
+    return aux;
+}
+const Materie Materie::operator--(){
+    this->credite--;
+    return *this;
+}
+Materie Materie::operator--(int){
+    Materie aux(*this);
+    this->credite--;
+    return aux;
+}
+bool Materie::operator<(const Materie& M){
+    if(this->credite < M.credite)
+        return true;
+    return false;
+}
+bool Materie::operator>(const Materie& M){
+    if(this->credite > M.credite)
+        return 1;
+    return 0;
+}
+bool Materie::operator<=(const Materie& M){
+    if(this->credite<=M.credite)
+        return 1;
+    return 0;
+}
+bool Materie::operator>=(const Materie& M){
+    if(this->credite>=M.credite)
+        return 1;
+    return 0;
+}
+bool Materie::operator==(const Materie& M){
+    if(this->nume_materie == M.nume_materie && this->credite == M.credite)
+        return 1;
+    return 0;
+}
+Materie Materie::operator+(int x){
+    Materie aux(*this);
+    aux.credite += x;
+    return aux;
+}
+Materie operator+(int x, Materie M){
+    M.credite += x;
+    return M;
+}
+Materie Materie::operator+(Materie M){
+    M.credite += this->credite;
+    return M;
+}
+Materie Materie::operator-(int x){
+    Materie aux(*this);
+    if(aux.credite < x)
+        aux.credite = 0;
+    else
+        aux.credite -= x;
+    return aux;
+}
+Materie operator-(int x, Materie M){
+    if(M.credite < x)
+        M.credite = 0;
+    else
+        M.credite -= x;
 
+    return M;
+}
+void Materie::prezentareMaterie(){
+    cout<<"Numele acestei materii este "<<this->nume_materie<<endl;
+    cout<<this->nume_materie<<" este predata de "<<this->prof.getNume()<< " "<<this->prof.getInitiala()<<" "<<this->prof.getPrenume()<<endl;
+    cout<<this->nume_materie<<" se tine in sala numarul "<<this->s.getNr_sala()<<" aflata la etajul "<<this->s.getEtaj()<<endl;
+    cout<<"Acesta materie are "<< this->credite<< " credite";
+    if(this->are_examen == 1)
+        cout<<" si are examen"<<endl;
+    else
+        cout<<" si nu are examen"<<endl;
+}
 ///---------------------------------------------------------------------------------------------------------------
 ///metode sala
+//constructori
 Sala::Sala(){
     this->etaj = 0;
     this->nr_sala = 0;
@@ -1085,7 +1302,6 @@ Sala::Sala(int etaj, int nr_sala){
     this->nume_amfiteatru = new char[2];
     strcpy(this->nume_amfiteatru, "/");
 }
-
 //copy-constructor
 Sala::Sala(const Sala& sala){
     this->etaj = sala.etaj;
@@ -1095,7 +1311,6 @@ Sala::Sala(const Sala& sala){
     this->nume_amfiteatru = new char[strlen(sala.nume_amfiteatru)+1];
     strcpy(this->nume_amfiteatru, sala.nume_amfiteatru);
 }
-
 //getteri
 int Sala::getEtaj(){
     return this->etaj;
@@ -1112,7 +1327,6 @@ bool Sala::getE_amfiteatru(){
 char* Sala::getNume_amfiteatru(){
     return this->nume_amfiteatru;
 }
-
 //setteri
 void Sala::setEtaj(int etaj){
     this->etaj = etaj;
@@ -1132,8 +1346,6 @@ void Sala::setNume_amfiteatru(char* nume_amfiteatru){
     this->nume_amfiteatru = new char[strlen(nume_amfiteatru)+1];
     strcpy(this->nume_amfiteatru, nume_amfiteatru);
 }
-
-
 //operatori
 Sala Sala::operator=(const Sala& sala){
     if(this!=&sala){
@@ -1186,7 +1398,90 @@ ostream & operator<<(ostream& out, const Sala& sala){
     cout<<endl<<endl;
     return out;
 }
+const Sala Sala::operator++() {
+    this->capacitate++;
+    return *this;
+}
+Sala Sala::operator++(int) {
+    Sala aux(*this);
+    this->capacitate++;
+    return aux;
+}
+const Sala Sala::operator--() {
+    this->capacitate--;
+    return *this;
+}
+Sala Sala::operator--(int) {
+    Sala aux(*this);
+    this->capacitate--;
+    return aux;
+}
+bool Sala::operator<(const Sala& s){
+    if(this->capacitate < s.capacitate)
+        return true;
+    return false;
+}
+bool Sala::operator>(const Sala& s){
+    if(this->capacitate > s.capacitate)
+        return 1;
+    return 0;
+}
+bool Sala::operator<=(const Sala& s){
+    if(this->capacitate<=s.capacitate)
+        return 1;
+    return 0;
+}
+bool Sala::operator>=(const Sala& s){
+    if(this->capacitate>=s.capacitate)
+        return 1;
+    return 0;
+}
+bool Sala::operator==(const Sala& s){
+    if(this->etaj == s.etaj && this->nr_sala == s.nr_sala)
+        return 1;
+    return 0;
+}
+Sala Sala::operator+(int x){
+    Sala aux(*this);
+    aux.capacitate += x;
+    return aux;
+}
+Sala operator+(int x, Sala s){
+    s.capacitate += x;
+    return s;
+}
+Sala Sala::operator+(Sala s){
+    s.capacitate += this->capacitate;
+    return s;
+}
+Sala Sala::operator-(int x){
+    Sala aux(*this);
+    if(aux.capacitate < x)
+        aux.capacitate = 0;
+    else
+        aux.capacitate -= x;
+    return aux;
+}
+Sala operator-(int x, Sala s){
+    if(s.capacitate < x)
+        s.capacitate = 0;
+    else
+        s.capacitate -= x;
 
+    return s;
+}
+//functionalitate
+void Sala::verificareAmfiteatru(){
+    if(this->capacitate >= 70 && this->e_amfiteatru == 0){
+        this->e_amfiteatru = 1;
+        string nume;
+        cout<<"Introduceti un nume pentru amfiteatru: ";
+        cin.get();
+        getline(cin, nume);
+        this->nume_amfiteatru = new char[nume.size()+1];
+        strcpy(this->nume_amfiteatru, nume.c_str());
+    }
+}
 //deconstructor
 Sala::~Sala(){
     if(this->nume_amfiteatru!=NULL)
@@ -1195,7 +1490,7 @@ Sala::~Sala(){
 
 ///----------------------------------------------------------------------------------------------------
 ///metode profesor
-
+//constructori
 Profesor::Profesor() {
     this->nume = new char[strlen("Profesor")+1];
     strcpy(this->nume, "Profesor");
@@ -1236,7 +1531,6 @@ Profesor::Profesor(char* nume, char* prenume, char initiala){
     this->vechime = 0;
     this->salariu = 0.0;
 }
-
 //copy-constructor
 Profesor::Profesor(const Profesor& prof){
     this->nume = new char[strlen(prof.nume)+1];
@@ -1248,7 +1542,6 @@ Profesor::Profesor(const Profesor& prof){
     this->vechime = prof.vechime;
     this->salariu = prof.salariu;
 }
-
 //getteri:
 char* Profesor::getNume(){
     return this->nume;
@@ -1291,7 +1584,6 @@ void Profesor::setVechime(int vechime){
 void Profesor::setSalariu(float salariu){
     this->salariu = salariu;
 }
-
 //operatori:
 Profesor Profesor::operator=(const Profesor& prof){
     if(this != &prof){
@@ -1310,7 +1602,6 @@ Profesor Profesor::operator=(const Profesor& prof){
     }
     return *this;
 }
-
 istream & operator>>(istream &in, Profesor &prof){
     cout<<"Introduceti datele profesorului: "<<endl;
     cout<<"Nume:";
@@ -1327,7 +1618,6 @@ istream & operator>>(istream &in, Profesor &prof){
     in>>prof.salariu;
     return in;
 }
-
 ostream & operator<<(ostream &out, const Profesor &prof){
     out<<"Date despre profesor:"<<endl;
     out<<"Nume:"<<prof.nume<<endl;
@@ -1341,6 +1631,89 @@ ostream & operator<<(ostream &out, const Profesor &prof){
     out<<"Salariu:"<<prof.salariu<<endl;
     cout<<endl<<endl;
     return out;
+}
+const Profesor& Profesor::operator++(){
+    this->vechime++;
+    return *this;
+}
+Profesor Profesor::operator++(int){
+    Profesor aux(*this);
+    this->vechime++;
+    return aux;
+}
+const Profesor& Profesor::operator--(){
+    this->vechime++;
+    return *this;
+}
+Profesor Profesor::operator--(int){
+    Profesor aux(*this);
+    this->vechime++;
+    return aux;
+}
+Profesor::operator int() {
+    return (int)this->salariu;
+}
+bool Profesor::operator<(const Profesor& prof){
+    if(this->vechime<prof.vechime)
+        return true;
+    return false;
+}
+bool Profesor::operator>(const Profesor& prof){
+    if(this->vechime>prof.vechime)
+        return 1;
+    return 0;
+}
+bool Profesor::operator<=(const Profesor& prof){
+    if(this->vechime<=prof.vechime)
+        return 1;
+    return 0;
+}
+bool Profesor::operator>=(const Profesor& prof){
+    if(this->vechime>=prof.vechime)
+        return 1;
+    return 0;
+}
+bool Profesor::operator==(const Profesor& prof){
+    if(strcmp(this->nume, prof.nume) == 0 && strcmp(this->prenume, prof.prenume) == 0 && this->initiala == prof.initiala)
+        return 1;
+    return 0;
+}
+Profesor Profesor::operator+(int x){
+    Profesor aux(*this);
+    aux.vechime += x;
+    return aux;
+}
+Profesor operator+(int x, Profesor prof){
+    prof.vechime += x;
+    return prof;
+}
+Profesor Profesor::operator+(Profesor prof){
+    prof.vechime += this->vechime;
+    prof.salariu += this->salariu;
+    return prof;
+}
+Profesor Profesor::operator-(int x){
+    Profesor aux(*this);
+    if(aux.vechime < x)
+        aux.vechime = 0;
+    else
+        aux.vechime -= x;
+    return aux;
+}
+Profesor operator-(int x, Profesor prof){
+    if(prof.vechime < x)
+        prof.vechime = 0;
+    else
+        prof.vechime -= x;
+
+    return prof;
+}
+//functionalitate
+void Profesor::verificareDecan(){
+    if(this->e_decan == 0 && this->vechime >=30){
+        this->e_decan = true;
+        this->salariu += 10000;
+    }
 }
 //destructor:
 Profesor::~Profesor(){
