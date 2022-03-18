@@ -249,7 +249,7 @@ int main()
     vector<Sala> sali;
     vector<Materie> materii;
     int rez=meniuCRUD();
-    while(rez!=5){
+    while(rez!=8){
         if(rez == 1){
             rez=meniuCreate();
             while(rez!=5){
@@ -768,6 +768,22 @@ int main()
                 }
                 rez = meniuDelete();
             }
+        }
+        else if(rez == 5){
+            cout<<endl<<"\nStudentii si mediile lor generale\n";
+            for(int i=0;i<studenti.size();i++){
+                cout<<"Studentul "<<i+1<<": "<<studenti[i].getNume()<<" are media generala "<<studenti[i].mediaGenerala()<<endl;
+            }
+            cout<<endl;
+
+        }
+        else if(rez == 6){
+            int indice = listaProfesor(profesori) - 1;
+            profesori[indice].verificareDecan();
+        }
+        else if(rez == 7){
+            int indice = listaSala(sali) - 1;
+            sali[indice].verificareAmfiteatru();
         }
         rez=meniuCRUD();
         }
@@ -1478,9 +1494,16 @@ void Sala::verificareAmfiteatru(){
         cout<<"Introduceti un nume pentru amfiteatru: ";
         cin.get();
         getline(cin, nume);
+        delete[] this->nume_amfiteatru;
         this->nume_amfiteatru = new char[nume.size()+1];
         strcpy(this->nume_amfiteatru, nume.c_str());
+        cout<<"\nSala este de acum amfiteatrul \""<<this->nume_amfiteatru<<"\""<<endl;
     }
+    else if(this->capacitate < 70 && this->e_amfiteatru == 0){
+        cout<<"\nSala nu are capacitatea necesara pentru a fi amfiteatru\n";
+    }
+    else
+        cout<<"\nSala este deja amfiteatru\n";
 }
 //deconstructor
 Sala::~Sala(){
@@ -1713,7 +1736,12 @@ void Profesor::verificareDecan(){
     if(this->e_decan == 0 && this->vechime >=30){
         this->e_decan = true;
         this->salariu += 10000;
+        cout<<"\nProfesorul este de acum decan\n";
     }
+    else if(this->e_decan == 0 && this->vechime <30)
+        cout<<"\nProfesorul nu are vechimea necesara pentru a fi decan\n";
+    else
+        cout<<"\nProfesorul este deja decan\n";
 }
 //destructor:
 Profesor::~Profesor(){
@@ -1731,10 +1759,13 @@ int meniuCRUD(){
     cout<<"2.Read"<<endl;
     cout<<"3.Update"<<endl;
     cout<<"4.Delete"<<endl;
-    cout<<"5.Inchidere aplicatie"<<endl<<endl;
+    cout<<"5.Calcularea mediilor generale ale studentilor"<<endl;
+    cout<<"6.Verificarea unui profesor"<<endl;
+    cout<<"7.Verificarea unei sali"<<endl;
+    cout<<"8.Inchidere aplicatie"<<endl<<endl;
     cout<<"Alegerea este:"; cin>>x;
-    while(x<1 || x>5){
-        cout<<"Va rog alegeti un numar intre 1 si 5"<<endl;
+    while(x<1 || x>8){
+        cout<<"Va rog alegeti un numar intre 1 si 8"<<endl;
         cout<<"Alegerea este:"; cin>>x;
     }
     return x;
@@ -1952,7 +1983,6 @@ int atributeStudent(){
         cout<<"Alegerea este:"; cin>>x;
     }
     return x;
-
 }
 int atributeProfesor(){
     int x;
