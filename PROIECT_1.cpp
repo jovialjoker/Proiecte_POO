@@ -216,7 +216,7 @@ public:
     Student operator+(Materie M);
     friend Student operator+(Materie materie, Student Stud);
     //functionalitate
-    float mediaGenerala();
+    void verificareBursa();
     //deconstructor
     ~Student();
 };
@@ -770,12 +770,8 @@ int main()
             }
         }
         else if(rez == 5){
-            cout<<endl<<"\nStudentii si mediile lor generale\n";
-            for(int i=0;i<studenti.size();i++){
-                cout<<"Studentul "<<i+1<<": "<<studenti[i].getNume()<<" are media generala "<<studenti[i].mediaGenerala()<<endl;
-            }
-            cout<<endl;
-
+            int indice = listaStudent(studenti) - 1;
+            studenti[indice].verificareBursa();
         }
         else if(rez == 6){
             int indice = listaProfesor(profesori) - 1;
@@ -913,7 +909,7 @@ void Student::setNr_materii(int nr_materii){
     this->nr_materii = nr_materii;
 }
 void Student::setMedii(int nr_medii, float* medii){
-    setNr_materii(nr_medii);
+    this->nr_materii = nr_medii;
     if(this->medii != NULL)
         delete[] this->medii;
     this->medii = new float[nr_medii];
@@ -1080,12 +1076,22 @@ Student operator+(Materie materie, Student Stud){
     return Stud;
 }
 //functionalitate
-float Student::mediaGenerala(){
-    float mg=0;
-    for(int i=0;i<this->nr_materii;i++)
-        mg+=this->medii[i];
-    mg = mg / this->nr_materii;
-    return mg;
+void Student::verificareBursa() {
+    if(this->are_bursa == 1){
+        cout<<"Studentul are bursa"<< endl;
+    }
+    else{
+        float mg=0;
+        for(int i=0;i<this->nr_materii;i++)
+            mg+=this->medii[i];
+        mg = mg / this->nr_materii;
+        if(mg > 9){
+            this->are_bursa = 1;
+            cout<<"Studentul are media necesara pentru a lua bursa"<<endl;
+        }
+        else
+            cout<<"Studentul nu are media necesara pentru a lua bursa"<<endl;
+    }
 }
 //deconstructor
 Student::~Student(){
@@ -1759,9 +1765,9 @@ int meniuCRUD(){
     cout<<"2.Read"<<endl;
     cout<<"3.Update"<<endl;
     cout<<"4.Delete"<<endl;
-    cout<<"5.Calcularea mediilor generale ale studentilor"<<endl;
-    cout<<"6.Verificarea unui profesor"<<endl;
-    cout<<"7.Verificarea unei sali"<<endl;
+    cout<<"5.Verificarea unui student pentru a vedea daca poate lua bursa"<<endl;
+    cout<<"6.Verificarea unui profesor pentru a vedea daca poate fi decan"<<endl;
+    cout<<"7.Verificarea unei sali pentru a vedea daca poate deveni amfiteatru"<<endl;
     cout<<"8.Inchidere aplicatie"<<endl<<endl;
     cout<<"Alegerea este:"; cin>>x;
     while(x<1 || x>8){
