@@ -331,7 +331,7 @@ Web_Dev::Web_Dev(string nume, string prenume, int varsta, vector<string> tehnolo
     this->salariu = salariu;
     this->nivel = nivel;
     for(int i = 0; i<tehnologii.size();i++){
-        this->tehnologii[i] = tehnologii[i];
+        this->tehnologii.push_back(tehnologii[i]);
     }
 }
 Web_Dev::Web_Dev(const Web_Dev &dev) {
@@ -724,14 +724,15 @@ istream &Proiect::read(istream &in) {
     for(int i=0;i<this->nr_oameni;i++){
         string aux1;
         cout<<"\nIntroduceti specializarea developerului "<< i+1 <<": [front-end/back-end] "; in>>aux1;
+        Web_Dev* aux;
         if(aux1 == "front-end"){
-            frontEnd_dev *aux = new frontEnd_dev;
-            in>>*aux;
+            aux = new frontEnd_dev();
+            in>>dynamic_cast<frontEnd_dev&>(*aux);
             this->echipa.push_back(aux);
         }
         else{
-            backEnd_dev *aux = new backEnd_dev();
-            in>>*aux;
+            aux = new backEnd_dev();
+            in>>dynamic_cast<backEnd_dev&>(*aux);
             this->echipa.push_back(aux);
         }
     }
