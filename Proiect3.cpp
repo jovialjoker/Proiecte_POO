@@ -135,7 +135,7 @@ public:
 //----------------------------------------------------------------------------------------
 //helpers
 int Read(list<echipa> echipe);
-list<echipa> Update(list<echipa> echipe, list<echipa> iter);
+list<echipa> Update(list<echipa> echipe, list<echipa> iter, int index);
 //------------------------------------------------------------------------
 //meniul CRUD de tip singleton
 class CRUD{
@@ -509,6 +509,8 @@ ostream& operator<<(ostream& out, const echipa& echipa){
 
 template<class T>
 T echipa::add(T a, T b) {
+    if(typeid(a+b).name() != typeid(T).name())
+        throw 1;
     return a+b;
 }
 template<class T>
@@ -521,12 +523,17 @@ float echipa::buget_Echipa() {
     for(int i=0;i<this->sportivi.size();i++){
         try{
             if(sportiv_profesionist* aux = dynamic_cast<sportiv_profesionist*>(this->sportivi[i]))
-                buget = add(buget, this->sportivi[i]->getSalariu());
+                try{
+                    buget = add(buget, this->sportivi[i]->getSalariu());
+                }
+                catch(...){
+                    cout<<"\nSuma iese din limitele tipului float!\n";
+                }
             else
                 throw 1;
         }
         catch(...){
-            cout<<"\nnu e sportiv prof\n";
+            cout<<"\nnu e sportiv profesionist\n";
         }
     }
     return buget;
@@ -579,14 +586,17 @@ int Read(list<echipa> echipe){
             cout<<"\nEchipa "<<++i<<": "<<it->getNumeEchipa();
         int comanda;
         cout<<"\nAlegeti o echipa: "; cin>>comanda;
-        if(comanda > 0 && comanda <= echipe.size())
-            return comanda;
-        else{
+        try{
+            if(comanda > 0 && comanda <= echipe.size())
+                return comanda;
+            throw -1;
+        }
+        catch(...){
             cout<<"\Selectati un numar corect(intre 1 si "<<echipe.size()<<")"<<endl;
         }
-    }
+        }
 }
-list<echipa> Update(list<echipa> echipe, list<echipa>::iterator iter){
+list<echipa> Update(list<echipa> echipe, list<echipa>::iterator iter, int index){
     if(iter->getSportivi().size() == 0)
         throw 1;
     else{
@@ -652,13 +662,12 @@ list<echipa> Update(list<echipa> echipe, list<echipa>::iterator iter){
                     }
             }
             echipa aux = *iter;
-            /*if((iter != echipe.end()) && (next(iter) == echipe.end()))
+            if(index == echipe.size()-1)
                 echipe.pop_back();
+            else if(index == 0)
+                    echipe.pop_front();
             else
-                iter = echipe.erase(iter);*/
-            list<echipa>::iterator iter2 = iter;
-            ++iter2;
-            echipe.erase(iter);
+                echipe.erase(iter);
             aux.setSportivi(sportivi);
             echipe.push_back(aux);
             return echipe;
@@ -711,10 +720,11 @@ void CRUD::meniu(){
                 try{
                     int aux = Read(echipe);
                     int j=0;
-                    for(auto it = echipe.begin(); it != echipe.end() && j<=aux-1; ++it) {
+                    list<echipa>::iterator it;
+                    for(it = echipe.begin(); it != echipe.end() && j<=aux-1; ++it) {
                         if (j == aux - 1){
                             try {
-                                echipe = Update(echipe, it);
+                                echipe = Update(echipe, it, aux-1);
                             }
                             catch(...){
                                 cout<<"\nNu mai exista memebri";
@@ -731,6 +741,19 @@ void CRUD::meniu(){
             case 4:{
                 try{
                     int aux = Read(echipe);
+                    int j=0;
+                    list<echipa>::iterator it;
+                    for(it = echipe.begin(); it != echipe.end() && j<=aux-1; ++it) {
+                        if (j == aux - 1){
+                            if(j == echipe.size()-1)
+                                echipe.pop_back();
+                            else if(j == 0)
+                                echipe.pop_front();
+                            else
+                                echipe.erase(it);
+                        }
+                        j++;
+                    }
                 }
                 catch(...){
                     cout<<"\nCreati un obiect mai intai!\n";
